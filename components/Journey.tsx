@@ -35,11 +35,11 @@ export default function Journey() {
     },
     {
       year: "May 2021 - Oct 2022",
-      title: "Process Mining Leadership",
+      title: "Dual Consulting Leadership",
       company: "COBERG",
-      role: "Lead Consultant (Process Mining, Success & Analysis)",
-      description: "Led process mining initiatives and senior-level consulting engagements, driving data-driven operational improvements for clients.",
-      highlight: "Process mining and analytics leadership"
+      role: "Celonis Process Mining Consultant & Salesforce Sr. Success and Analysis Consultant (Lead)",
+      description: "Led dual consulting roles in process mining and Salesforce analytics, driving data-driven operational improvements and CRM success strategies for enterprise clients.",
+      highlight: "Dual-track consulting leadership"
     },
     {
       year: "2025 - Present",
