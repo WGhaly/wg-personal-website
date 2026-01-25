@@ -74,29 +74,29 @@ export default function About() {
                 About Me
               </p>
               <h2 className="text-4xl md:text-5xl lg:text-6xl font-serif font-bold text-black">
-                The Man Behind the Mission
+                Background & Approach
               </h2>
             </motion.div>
 
             <motion.div variants={itemVariants} className="space-y-6 text-base md:text-lg text-black/80 leading-relaxed">
               <p>
-                I'm <span className="font-semibold text-black">Waseem Ghaly</span>—a builder at heart, an innovator by trade, 
-                and a firm believer that Egypt's future lies in the hands of its entrepreneurs, innovators, and risk-takers.
+                I'm <span className="font-semibold text-black">Waseem Ghaly</span>, an entrepreneur and operations professional 
+                focused on building sustainable businesses and supporting Egypt's innovation ecosystem.
               </p>
 
               <p>
-                From co-founding ventures like Progressio and Byit to leading operations at national institutions, 
-                I've spent years creating the infrastructure that turns bold ideas into market realities.
+                Through ventures like Progressio and Byit, alongside operational roles at national institutions, 
+                I've worked to develop practical infrastructure and frameworks that help entrepreneurs succeed.
               </p>
 
               <p>
-                My work isn't about theory—it's about execution. Whether through strategic consulting, 
-                building technology ventures, or supporting the next generation of entrepreneurs, I focus on what works.
+                My approach emphasizes execution over theory—implementing operational systems, 
+                facilitating market access, and providing hands-on support for growing ventures.
               </p>
 
               <p className="text-lg md:text-xl font-medium text-black pt-4">
-                Today, I'm focused on investing in young talent and supporting entrepreneurs 
-                who are building startups that transform the Middle East.
+                Currently, I focus on advising early-stage startups and contributing to programs 
+                that strengthen entrepreneurship in the region.
               </p>
             </motion.div>
           </motion.div>

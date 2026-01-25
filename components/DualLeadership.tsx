@@ -19,13 +19,13 @@ export default function DualLeadership() {
           className="text-center mb-20"
         >
           <p className="text-gold text-sm tracking-[0.2em] uppercase font-medium mb-4">
-            Dual Leadership
+            Current Roles
           </p>
           <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-serif font-bold text-white mb-6">
-            Multi-Faceted Impact
+            Professional Focus Areas
           </h2>
           <p className="text-lg md:text-xl text-white/70 max-w-3xl mx-auto">
-            Building innovation ecosystems across public institutions, private ventures, and entrepreneurial investments
+            Contributing to innovation initiatives across public institutions, private ventures, and entrepreneurial programs
           </p>
         </motion.div>
 
@@ -54,15 +54,15 @@ export default function DualLeadership() {
 
                 <div>
                   <h3 className="text-2xl md:text-3xl font-serif font-bold text-white mb-2">
-                    Operations Director
+                    Director of Operations
                   </h3>
                   <p className="text-gold font-medium">National Center of Technology Commercialization (NCTC)</p>
                 </div>
 
                 <div className="space-y-4 text-white/70">
                   <p className="leading-relaxed">
-                    Leading operational excellence at Egypt's premier technology commercialization center, 
-                    driving initiatives that bridge innovation, research, and market opportunities.
+                    Managing operational functions at a national technology commercialization center, 
+                    supporting initiatives that connect research, innovation, and market opportunities.
                   </p>
                   
                   <div className="space-y-2 pt-4">

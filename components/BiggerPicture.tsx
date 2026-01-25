@@ -17,12 +17,12 @@ export default function BiggerPicture() {
     {
       number: "02",
       title: "Execution Over Theory",
-      description: "Egypt has no shortage of vision documents and strategic plans. What it lacks is people who roll up their sleeves and build."
+      description: "Practical implementation and hands-on work often matter more than strategic documents. Focus on building and testing."
     },
     {
       number: "03",
       title: "Global Connection",
-      description: "Egypt's innovators shouldn't have to leave to succeed. My job is to bring the world's opportunities to them."
+      description: "Local entrepreneurs benefit from global market access and international partnerships without needing to relocate."
     },
     {
       number: "04",
@@ -48,10 +48,10 @@ export default function BiggerPicture() {
           className="text-center mb-20"
         >
           <p className="text-gold text-sm tracking-[0.2em] uppercase font-medium mb-4">
-            The Bigger Picture
+            Perspective
           </p>
           <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-serif font-bold text-black mb-6">
-            Why This Work Matters
+            The Entrepreneurial Opportunity
           </h2>
         </motion.div>
 
@@ -70,17 +70,16 @@ export default function BiggerPicture() {
             
             <div className="relative z-10 space-y-6 text-base sm:text-lg md:text-xl leading-relaxed">
               <p>
-                Egypt has 105 million people—one of the youngest, most dynamic populations in the world. 
-                But without a thriving innovation economy, that energy has nowhere productive to go.
+                Egypt has one of the youngest, most dynamic populations in the world, 
+                presenting significant opportunities for entrepreneurial growth and innovation.
               </p>
               <p>
-                Entrepreneurs need more than motivation—they need operational frameworks, market access, 
-                and sustainable business models. Organizations need more than strategy—they need execution discipline, 
-                measurable outcomes, and continuous improvement.
+                Entrepreneurs need operational frameworks, market access, and sustainable business models. 
+                Organizations require execution discipline, measurable outcomes, and continuous improvement.
               </p>
               <p className="text-gold font-medium text-xl sm:text-2xl">
-                My mission: Build bridges between ideas and execution, between vision and impact, 
-                between Egypt's talent and global opportunities.
+                My focus: Contributing to practical connections between ideas and execution, 
+                helping entrepreneurs access resources and opportunities.
               </p>
             </div>
 

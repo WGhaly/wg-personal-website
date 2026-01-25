@@ -117,7 +117,7 @@ export default function Hero() {
             transition={{ delay: 0.4 }}
             className="text-gold text-sm md:text-base tracking-[0.3em] uppercase font-medium"
           >
-            Nation Builder • Innovation Architect
+            Entrepreneur • Operations Leader
           </motion.p>
 
           {/* Main Headline */}
@@ -137,7 +137,7 @@ export default function Hero() {
             transition={{ delay: 0.8 }}
             className="text-lg sm:text-xl md:text-2xl lg:text-3xl text-white/90 max-w-4xl mx-auto font-light leading-relaxed px-4"
           >
-            Building Egypt's Innovation Economy from the Ground Up
+            Supporting entrepreneurship and operational excellence in Egypt's innovation ecosystem
           </motion.p>
 
           {/* Role Pills */}
