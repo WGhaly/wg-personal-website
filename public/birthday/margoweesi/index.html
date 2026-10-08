@@ -25,13 +25,14 @@
 }
 *{box-sizing:border-box}
 html,body{overflow-x:clip}
+html{background:#bcdcf8}
 body{margin:0;background:var(--sky);color:var(--navy);font-family:var(--body);line-height:1.45}
 p,h1,h2{margin:0}
 
 .film{position:relative}
-.stage{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;display:flex;align-items:center;justify-content:center;
+.stage{position:sticky;top:0;height:100vh;height:100dvh;overflow:hidden;display:flex;align-items:center;justify-content:center;
   background:radial-gradient(120% 90% at 50% 0%,#eef7ff 0%,var(--sky) 60%,#bcdcf8 100%)}
-.frame{position:relative;width:min(100vw,calc(100svh * 16 / 9));aspect-ratio:16/9;container-type:inline-size}
+.frame{position:relative;width:min(100vw,calc(100vh * 16 / 9));width:min(100vw,calc(100dvh * 16 / 9));aspect-ratio:16/9;container-type:inline-size}
 .frame canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
 
 /* Notes live inside each frame's painted area */
@@ -219,7 +220,8 @@ body.locked{overflow:hidden}
     if (i < STOP.length - 1){ segs.push({ hold: false, i, a: acc, b: acc + MOVE }); acc += MOVE; }
   });
   const TOTAL = acc;
-  film.style.height = `calc(${TOTAL * 100}svh + 100svh)`;
+  const U = CSS.supports("height", "1lvh") ? "lvh" : "vh";   // largest screen height, so the end is always reachable
+  film.style.height = `calc(${TOTAL * 100}${U} + 100${U})`;
 
   let target = 0, shown = 0, hold = 0, lastOn = -2;
   function read(){
