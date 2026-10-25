@@ -79,11 +79,10 @@ export default function Hero() {
           transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
           className="md:col-span-5 md:order-2 flex justify-center md:justify-end"
         >
-          {/* The gold outline is the photo's exact size, offset down and right by the same amount. */}
-          <div className="relative w-[min(68vw,380px)] mr-4 mb-4">
-            <div className="absolute inset-0 border border-gold/50 rounded-sm translate-x-4 translate-y-4" aria-hidden />
-            <div className="relative aspect-[4/5] overflow-hidden rounded-sm shadow-[0_0_80px_rgba(212,175,55,0.15)]">
-              <Image src="/portrait.jpg" alt="Waseem Ghaly" fill priority sizes="(min-width: 768px) 380px, 68vw" className="object-cover" />
+          {/* The photo sits inside a thin gold frame, with an even gap all round. */}
+          <div className="relative w-[min(72vw,400px)] p-2.5 md:p-3 border border-gold/50 rounded-sm shadow-[0_0_80px_rgba(212,175,55,0.15)]">
+            <div className="relative aspect-[4/5] overflow-hidden rounded-[2px]">
+              <Image src="/portrait.jpg" alt="Waseem Ghaly" fill priority sizes="(min-width: 768px) 400px, 72vw" className="object-cover" />
             </div>
           </div>
         </motion.div>
@@ -98,14 +97,15 @@ export default function Hero() {
           >
             Entrepreneur · Consultant
           </motion.p>
-          <h1 className="font-serif font-bold text-white leading-[0.95] tracking-tight text-[clamp(56px,9vw,140px)]">
+          <h1 className="font-serif font-bold text-white leading-[0.9] tracking-tight text-[clamp(56px,9vw,140px)]">
             {['Waseem', 'Ghaly'].map((word, i) => (
-              <span key={word} className="block overflow-hidden">
+              // Bottom padding keeps descenders (the y) inside both the reveal mask and the gold gradient's paint box.
+              <span key={word} className="block overflow-hidden pb-[0.14em]">
                 <motion.span
                   initial={{ y: '105%' }}
                   animate={{ y: 0 }}
                   transition={{ delay: 0.4 + i * 0.12, duration: 1, ease: [0.16, 1, 0.3, 1] }}
-                  className={`block ${i === 1 ? 'gradient-text' : ''}`}
+                  className={`block pb-[0.14em] -mb-[0.14em] ${i === 1 ? 'gradient-text' : ''}`}
                 >
                   {word}
                 </motion.span>
