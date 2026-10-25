@@ -56,12 +56,13 @@ function GlowCard({ children, href, label }: { children: React.ReactNode; href: 
 }
 
 /**
- * Desktop: card i fades and rises in during its own slice of the pinned section's scroll (0, then 0.5, then 1),
- * which lines up with the snap points. Phones: each card fades in as it scrolls into view.
+ * Desktop: card i fades and rises in during its own slice of the pinned section's scroll, finishing exactly at its
+ * snap stop. Phones: each card fades in as it scrolls into view.
  */
 function RevealCard({ index, progress, pinned, children }: { index: number; progress: MotionValue<number>; pinned: boolean; children: React.ReactNode }) {
-  const start = index * 0.5 - 0.3
-  const end = index * 0.5
+  // Card i is fully in at its own snap stop (i screens into a 3-screen scroll); the last stop then holds for a screen.
+  const end = index / 3
+  const start = end - 0.2
   const opacity = useTransform(progress, [start, end], [0, 1])
   const y = useTransform(progress, [start, end], [80, 0])
   if (pinned && index > 0) return <motion.div style={{ opacity, y }}>{children}</motion.div>
@@ -92,7 +93,7 @@ export default function Ventures() {
   }, [])
 
   return (
-    <section id="ventures" ref={sectionRef} className={`relative bg-black ${pinned ? 'h-[300vh]' : 'snap-section py-24'}`}>
+    <section id="ventures" ref={sectionRef} className={`relative bg-black ${pinned ? 'h-[400vh]' : 'snap-section py-24'}`}>
       {/* Snap points: arriving, then one per extra company. */}
       {pinned && [0, 1, 2].map((i) => <div key={i} className="snap-section absolute inset-x-0 h-px" style={{ top: `${i * 100}vh` }} aria-hidden />)}
       <div className={pinned ? 'sticky top-0 h-screen flex items-center pt-16' : ''}>

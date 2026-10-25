@@ -142,7 +142,7 @@ body::after {
 .marquee-track {
   display: flex;
   flex: none;
-  animation: marquee 60s linear infinite;
+  animation: marquee 45s linear infinite;
 }
 .marquee-reverse {
   animation-direction: reverse;
@@ -178,6 +178,7 @@ html {
 }
 .snap-section {
   scroll-snap-align: start;
+  scroll-snap-stop: always; /* one gesture moves one stop, never past the next company */
 }
 .snap-footer {
   scroll-snap-align: end;

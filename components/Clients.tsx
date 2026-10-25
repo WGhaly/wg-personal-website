@@ -32,9 +32,9 @@ const logos = [
   { name: 'Silicon21', logo: '/images/image copy 28.png' },
 ]
 
-/** The logo wall: two rows drifting in opposite directions (pure CSS, pauses on hover). */
+/** The logo wall: three rows drifting in alternating directions (pure CSS, pauses on hover). */
 export default function Clients() {
-  const rows = [logos.slice(0, 15), logos.slice(15)]
+  const rows = [logos.slice(0, 10), logos.slice(10, 20), logos.slice(20)]
   return (
     <section id="clients" className="snap-section min-h-screen flex flex-col justify-center py-20 md:py-28 bg-off-white overflow-hidden">
       <div className="section-container mb-12 md:mb-16 flex flex-col md:flex-row md:items-end md:justify-between gap-3">
@@ -45,19 +45,19 @@ export default function Clients() {
         <p className="text-black/50 text-sm md:text-base">From global brands to fast-growing regional players.</p>
       </div>
 
-      <div className="space-y-5 marquee-mask">
+      <div className="space-y-3 md:space-y-4 marquee-mask">
         {rows.map((row, r) => (
           <div key={r} className="marquee">
-            <div className={`marquee-track ${r === 1 ? 'marquee-reverse' : ''}`}>
+            <div className={`marquee-track ${r % 2 === 1 ? 'marquee-reverse' : ''}`}>
               {[...row, ...row].map((logo, i) => (
-                <div key={`${logo.logo}-${i}`} className="relative flex-none w-36 h-20 md:w-44 md:h-24 mx-2.5 rounded-lg bg-white border border-black/5">
+                <div key={`${logo.logo}-${i}`} className="relative flex-none w-[104px] h-14 mx-1.5 md:w-44 md:h-24 md:mx-2.5 rounded-lg bg-white border border-black/5">
                   <Image
                     src={logo.logo}
                     alt={i < row.length ? logo.name : ''}
                     aria-hidden={i >= row.length}
                     fill
-                    sizes="176px"
-                    className="object-contain p-4 grayscale opacity-70 hover:grayscale-0 hover:opacity-100 transition-all duration-300"
+                    sizes="(min-width: 768px) 176px, 104px"
+                    className="object-contain p-2.5 md:p-4 grayscale opacity-70 hover:grayscale-0 hover:opacity-100 transition-all duration-300"
                   />
                 </div>
               ))}

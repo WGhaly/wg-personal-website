@@ -79,10 +79,11 @@ export default function Hero() {
           transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
           className="md:col-span-5 md:order-2 flex justify-center md:justify-end"
         >
-          <div className="relative w-[min(72vw,400px)]">
-            <div className="absolute -inset-3 border border-gold/30 translate-x-4 translate-y-4" aria-hidden />
+          {/* The gold outline is the photo's exact size, offset down and right by the same amount. */}
+          <div className="relative w-[min(68vw,380px)] mr-4 mb-4">
+            <div className="absolute inset-0 border border-gold/50 rounded-sm translate-x-4 translate-y-4" aria-hidden />
             <div className="relative aspect-[4/5] overflow-hidden rounded-sm shadow-[0_0_80px_rgba(212,175,55,0.15)]">
-              <Image src="/portrait.jpg" alt="Waseem Ghaly" fill priority sizes="(min-width: 768px) 400px, 72vw" className="object-cover" />
+              <Image src="/portrait.jpg" alt="Waseem Ghaly" fill priority sizes="(min-width: 768px) 380px, 68vw" className="object-cover" />
             </div>
           </div>
         </motion.div>
