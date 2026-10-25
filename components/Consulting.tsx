@@ -16,8 +16,8 @@ const experience = [
 
 export default function Consulting() {
   return (
-    <section id="consulting" className="relative py-24 md:py-36 bg-charcoal-dark border-t border-white/5">
-      <div className="section-container grid md:grid-cols-2 gap-14 md:gap-20 items-start">
+    <section id="consulting" className="snap-section relative min-h-screen flex items-center py-24 md:py-28 bg-charcoal-dark border-t border-white/5">
+      <div className="section-container w-full grid md:grid-cols-2 gap-14 md:gap-20 items-start">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}

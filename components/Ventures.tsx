@@ -1,8 +1,8 @@
 'use client'
 
-import { motion } from 'framer-motion'
+import { motion, useScroll, useTransform, type MotionValue } from 'framer-motion'
 import Image from 'next/image'
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 const ventures = [
   {
@@ -26,7 +26,7 @@ const ventures = [
   },
   {
     name: 'Byit',
-    role: 'Co-founder',
+    role: 'Early co-founder · Advisory board',
     year: '2019',
     line: 'Real-estate brokers keep a fair share of every deal.',
     url: 'https://www.byitcorp.com',
@@ -55,18 +55,54 @@ function GlowCard({ children, href, label }: { children: React.ReactNode; href: 
   )
 }
 
+/**
+ * Desktop: card i fades and rises in during its own slice of the pinned section's scroll (0, then 0.5, then 1),
+ * which lines up with the snap points. Phones: each card fades in as it scrolls into view.
+ */
+function RevealCard({ index, progress, pinned, children }: { index: number; progress: MotionValue<number>; pinned: boolean; children: React.ReactNode }) {
+  const start = index * 0.5 - 0.3
+  const end = index * 0.5
+  const opacity = useTransform(progress, [start, end], [0, 1])
+  const y = useTransform(progress, [start, end], [80, 0])
+  if (pinned && index > 0) return <motion.div style={{ opacity, y }}>{children}</motion.div>
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 50 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: '-60px' }}
+      transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+    >
+      {children}
+    </motion.div>
+  )
+}
+
 export default function Ventures() {
   const [videoOpen, setVideoOpen] = useState(false)
+  const sectionRef = useRef<HTMLElement>(null)
+  const [pinned, setPinned] = useState(false)
+  const { scrollYProgress } = useScroll({ target: sectionRef, offset: ['start start', 'end end'] })
+
+  useEffect(() => {
+    const mq = window.matchMedia('(min-width: 768px) and (min-height: 640px) and (prefers-reduced-motion: no-preference)')
+    const sync = () => setPinned(mq.matches)
+    sync()
+    mq.addEventListener('change', sync)
+    return () => mq.removeEventListener('change', sync)
+  }, [])
 
   return (
-    <section id="ventures" className="relative py-24 md:py-36 bg-black">
-      <div className="section-container">
+    <section id="ventures" ref={sectionRef} className={`relative bg-black ${pinned ? 'h-[300vh]' : 'snap-section py-24'}`}>
+      {/* Snap points: arriving, then one per extra company. */}
+      {pinned && [0, 1, 2].map((i) => <div key={i} className="snap-section absolute inset-x-0 h-px" style={{ top: `${i * 100}vh` }} aria-hidden />)}
+      <div className={pinned ? 'sticky top-0 h-screen flex items-center pt-16' : ''}>
+      <div className="section-container w-full">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-80px' }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="mb-14 md:mb-20 flex flex-col md:flex-row md:items-end md:justify-between gap-4"
+          className="mb-10 md:mb-14 flex flex-col md:flex-row md:items-end md:justify-between gap-4"
         >
           <div>
             <p className="text-gold text-xs tracking-[0.35em] uppercase font-medium mb-4">Founded</p>
@@ -78,13 +114,7 @@ export default function Ventures() {
 
         <div className="grid md:grid-cols-3 gap-6 md:gap-8">
           {ventures.map((v, i) => (
-            <motion.div
-              key={v.name}
-              initial={{ opacity: 0, y: 50 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: '-60px' }}
-              transition={{ duration: 0.9, delay: i * 0.12, ease: [0.16, 1, 0.3, 1] }}
-            >
+            <RevealCard key={v.name} index={i} progress={scrollYProgress} pinned={pinned}>
               <GlowCard href={v.url} label={`${v.name}, ${v.domain}`}>
                 {/* Browser frame */}
                 <div className="relative overflow-hidden rounded-lg border border-white/10 bg-charcoal">
@@ -138,9 +168,10 @@ export default function Ventures() {
                   </div>
                 </div>
               </GlowCard>
-            </motion.div>
+            </RevealCard>
           ))}
         </div>
+      </div>
       </div>
 
       {videoOpen && (

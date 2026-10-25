@@ -36,7 +36,7 @@ const logos = [
 export default function Clients() {
   const rows = [logos.slice(0, 15), logos.slice(15)]
   return (
-    <section id="clients" className="py-20 md:py-28 bg-off-white overflow-hidden">
+    <section id="clients" className="snap-section min-h-screen flex flex-col justify-center py-20 md:py-28 bg-off-white overflow-hidden">
       <div className="section-container mb-12 md:mb-16 flex flex-col md:flex-row md:items-end md:justify-between gap-3">
         <div>
           <p className="text-gold-bronze text-xs tracking-[0.35em] uppercase font-medium mb-4">Worked with</p>

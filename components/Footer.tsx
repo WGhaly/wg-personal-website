@@ -1,6 +1,6 @@
 export default function Footer() {
   return (
-    <footer className="bg-black border-t border-white/10">
+    <footer className="snap-footer bg-black border-t border-white/10">
       <div className="section-container py-8 flex flex-col sm:flex-row gap-4 items-center justify-between text-sm text-white/40">
         <p>© {new Date().getFullYear()} Waseem Ghaly</p>
         <nav className="flex gap-6">

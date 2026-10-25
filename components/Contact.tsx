@@ -4,8 +4,8 @@ import { motion } from 'framer-motion'
 
 export default function Contact() {
   return (
-    <section id="contact" className="hero-glow relative py-28 md:py-44 bg-black overflow-hidden">
-      <div className="section-container relative z-10 text-center">
+    <section id="contact" className="snap-section hero-glow relative min-h-screen flex items-center py-28 bg-black overflow-hidden">
+      <div className="section-container w-full relative z-10 text-center">
         <motion.p
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}

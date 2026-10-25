@@ -1,5 +1,4 @@
 import Navigation from '@/components/Navigation'
-import SmoothScroll from '@/components/SmoothScroll'
 import Hero from '@/components/Hero'
 import Ventures from '@/components/Ventures'
 import Consulting from '@/components/Consulting'
@@ -10,7 +9,6 @@ import Footer from '@/components/Footer'
 export default function Home() {
   return (
     <main className="min-h-screen bg-black">
-      <SmoothScroll />
       <Navigation />
       <Hero />
       <Ventures />

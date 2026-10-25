@@ -7,75 +7,83 @@ import { scrollToSection } from '@/lib/utils'
 
 const ventures = ['Nin9', 'Progressio Solutions', 'Byit']
 
-/**
- * The signature: a gold spotlight. The portrait sits in the dark; a warm light follows the cursor and reveals it.
- * Without a fine pointer (phones) or after a moment of stillness, the light drifts on its own.
- */
+/** Hero: falling gold beams behind the name, and the portrait in a gold-edged frame. */
 export default function Hero() {
-  const heroRef = useRef<HTMLElement>(null)
-  const frameRef = useRef<HTMLDivElement>(null)
+  const canvasRef = useRef<HTMLCanvasElement>(null)
 
   useEffect(() => {
-    const hero = heroRef.current
-    const frame = frameRef.current
-    if (!hero || !frame) return
+    const canvas = canvasRef.current
+    const ctx = canvas?.getContext('2d')
+    if (!canvas || !ctx) return
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
 
-    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    let target = { x: 0.5, y: 0.3 }
-    const light = { x: 0.5, y: 0.3 }
-    let lastMove = 0
+    const setCanvasSize = () => {
+      canvas.width = canvas.offsetWidth
+      canvas.height = canvas.offsetHeight
+    }
+    setCanvasSize()
+    window.addEventListener('resize', setCanvasSize)
+
+    // Thin gold beams falling down the screen, with a fading trail.
+    const beams = Array.from({ length: 30 }, () => ({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      length: Math.random() * 200 + 100,
+      speed: Math.random() * 2 + 1,
+      angle: Math.random() * 0.2 - 0.1,
+      opacity: Math.random() * 0.5 + 0.1,
+    }))
+
     let raf = 0
-
-    const onMove = (e: PointerEvent) => {
-      if (e.pointerType !== 'mouse') return
-      const r = frame.getBoundingClientRect()
-      target = { x: (e.clientX - r.left) / r.width, y: (e.clientY - r.top) / r.height }
-      const h = hero.getBoundingClientRect()
-      hero.style.setProperty('--hx', `${e.clientX - h.left}px`)
-      hero.style.setProperty('--hy', `${e.clientY - h.top}px`)
-      lastMove = performance.now()
-    }
-
-    const tick = (t: number) => {
-      if (t - lastMove > 2500) {
-        // Idle drift: a slow figure-eight over the face.
-        target = { x: 0.5 + Math.sin(t / 2600) * 0.28, y: 0.3 + Math.sin(t / 1300) * 0.12 }
+    const animate = () => {
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.05)'
+      ctx.fillRect(0, 0, canvas.width, canvas.height)
+      for (const beam of beams) {
+        beam.y += beam.speed
+        beam.x += beam.angle
+        if (beam.y > canvas.height + 100) {
+          beam.y = -100
+          beam.x = Math.random() * canvas.width
+        }
+        const gradient = ctx.createLinearGradient(beam.x, beam.y, beam.x, beam.y + beam.length)
+        gradient.addColorStop(0, 'rgba(212, 175, 55, 0)')
+        gradient.addColorStop(0.5, `rgba(212, 175, 55, ${beam.opacity})`)
+        gradient.addColorStop(1, 'rgba(212, 175, 55, 0)')
+        ctx.strokeStyle = gradient
+        ctx.lineWidth = 2
+        ctx.beginPath()
+        ctx.moveTo(beam.x, beam.y)
+        ctx.lineTo(beam.x + beam.angle * beam.length, beam.y + beam.length)
+        ctx.stroke()
       }
-      light.x += (target.x - light.x) * 0.08
-      light.y += (target.y - light.y) * 0.08
-      frame.style.setProperty('--x', `${light.x * 100}%`)
-      frame.style.setProperty('--y', `${light.y * 100}%`)
-      raf = requestAnimationFrame(tick)
+      raf = requestAnimationFrame(animate)
     }
+    animate()
 
-    if (reduced) {
-      frame.style.setProperty('--x', '50%')
-      frame.style.setProperty('--y', '30%')
-      frame.style.setProperty('--r', '75%')
-    } else {
-      hero.addEventListener('pointermove', onMove)
-      raf = requestAnimationFrame(tick)
-    }
     return () => {
-      hero.removeEventListener('pointermove', onMove)
       cancelAnimationFrame(raf)
+      window.removeEventListener('resize', setCanvasSize)
     }
   }, [])
 
   return (
-    <section id="hero" ref={heroRef} className="hero-glow relative min-h-[100svh] flex items-center overflow-hidden bg-black pt-24 pb-16">
+    <section id="hero" className="snap-section relative min-h-[100svh] flex items-center overflow-hidden bg-black pt-24 pb-16">
+      <canvas ref={canvasRef} className="absolute inset-0 w-full h-full z-0" aria-hidden />
+      <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black z-0" aria-hidden />
+
       <div className="section-container relative z-10 grid md:grid-cols-12 gap-10 md:gap-8 items-center w-full">
-        {/* Portrait in the spotlight */}
+        {/* Portrait */}
         <motion.div
           initial={{ opacity: 0, scale: 0.96 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
           className="md:col-span-5 md:order-2 flex justify-center md:justify-end"
         >
-          <div ref={frameRef} className="spotlight relative w-[min(78vw,420px)] aspect-[4/5] overflow-hidden rounded-sm border border-white/10">
-            <Image src="/portrait.jpg" alt="Waseem Ghaly" fill priority sizes="(min-width: 768px) 420px, 78vw" className="spotlight-base object-cover" />
-            <Image src="/portrait.jpg" alt="" aria-hidden fill sizes="(min-width: 768px) 420px, 78vw" className="spotlight-lit object-cover" />
-            <div className="spotlight-glow absolute inset-0" aria-hidden />
+          <div className="relative w-[min(72vw,400px)]">
+            <div className="absolute -inset-3 border border-gold/30 translate-x-4 translate-y-4" aria-hidden />
+            <div className="relative aspect-[4/5] overflow-hidden rounded-sm shadow-[0_0_80px_rgba(212,175,55,0.15)]">
+              <Image src="/portrait.jpg" alt="Waseem Ghaly" fill priority sizes="(min-width: 768px) 400px, 72vw" className="object-cover" />
+            </div>
           </div>
         </motion.div>
 
