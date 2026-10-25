@@ -1,25 +1,21 @@
 import Navigation from '@/components/Navigation'
+import SmoothScroll from '@/components/SmoothScroll'
 import Hero from '@/components/Hero'
-import About from '@/components/About'
 import Ventures from '@/components/Ventures'
-import BiggerPicture from '@/components/BiggerPicture'
-import Journey from '@/components/Journey'
-import Expertise from '@/components/Expertise'
+import Consulting from '@/components/Consulting'
 import Clients from '@/components/Clients'
 import Contact from '@/components/Contact'
 import Footer from '@/components/Footer'
 
 export default function Home() {
   return (
-    <main className="min-h-screen">
+    <main className="min-h-screen bg-black">
+      <SmoothScroll />
       <Navigation />
       <Hero />
-      <About />
-      <Clients />
       <Ventures />
-      <Journey />
-      <Expertise />
-      <BiggerPicture />
+      <Consulting />
+      <Clients />
       <Contact />
       <Footer />
     </main>

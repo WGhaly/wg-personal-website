@@ -2,210 +2,144 @@
 
 import { motion } from 'framer-motion'
 import { useEffect, useRef } from 'react'
+import Image from 'next/image'
 import { scrollToSection } from '@/lib/utils'
 
+const ventures = ['Nin9', 'Progressio Solutions', 'Byit']
+
+/**
+ * The signature: a gold spotlight. The portrait sits in the dark; a warm light follows the cursor and reveals it.
+ * Without a fine pointer (phones) or after a moment of stillness, the light drifts on its own.
+ */
 export default function Hero() {
-  const canvasRef = useRef<HTMLCanvasElement>(null)
+  const heroRef = useRef<HTMLElement>(null)
+  const frameRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    const canvas = canvasRef.current
-    if (!canvas) return
+    const hero = heroRef.current
+    const frame = frameRef.current
+    if (!hero || !frame) return
 
-    const ctx = canvas.getContext('2d')
-    if (!ctx) return
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    let target = { x: 0.5, y: 0.35 }
+    const light = { x: 0.5, y: 0.35 }
+    let lastMove = 0
+    let raf = 0
 
-    // Set canvas size
-    const setCanvasSize = () => {
-      canvas.width = window.innerWidth
-      canvas.height = window.innerHeight
+    const onMove = (e: PointerEvent) => {
+      if (e.pointerType !== 'mouse') return
+      const r = frame.getBoundingClientRect()
+      target = { x: (e.clientX - r.left) / r.width, y: (e.clientY - r.top) / r.height }
+      const h = hero.getBoundingClientRect()
+      hero.style.setProperty('--hx', `${e.clientX - h.left}px`)
+      hero.style.setProperty('--hy', `${e.clientY - h.top}px`)
+      lastMove = performance.now()
     }
-    setCanvasSize()
-    window.addEventListener('resize', setCanvasSize)
 
-    // Beam animation
-    class Beam {
-      x: number
-      y: number
-      length: number
-      speed: number
-      angle: number
-      opacity: number
-
-      constructor() {
-        this.x = Math.random() * (canvas?.width || 1920)
-        this.y = -100
-        this.length = Math.random() * 200 + 100
-        this.speed = Math.random() * 2 + 1
-        this.angle = Math.random() * 0.2 - 0.1
-        this.opacity = Math.random() * 0.5 + 0.1
+    const tick = (t: number) => {
+      if (t - lastMove > 2500) {
+        // Idle drift: a slow figure-eight over the face.
+        target = { x: 0.5 + Math.sin(t / 2600) * 0.28, y: 0.38 + Math.sin(t / 1300) * 0.14 }
       }
-
-      update() {
-        this.y += this.speed
-        this.x += this.angle
-        
-        if (this.y > (canvas?.height || 1080) + 100) {
-          this.y = -100
-          this.x = Math.random() * (canvas?.width || 1920)
-        }
-      }
-
-      draw() {
-        if (!ctx) return
-        
-        const gradient = ctx.createLinearGradient(this.x, this.y, this.x, this.y + this.length)
-        gradient.addColorStop(0, `rgba(212, 175, 55, 0)`)
-        gradient.addColorStop(0.5, `rgba(212, 175, 55, ${this.opacity})`)
-        gradient.addColorStop(1, `rgba(212, 175, 55, 0)`)
-        
-        ctx.strokeStyle = gradient
-        ctx.lineWidth = 2
-        ctx.beginPath()
-        ctx.moveTo(this.x, this.y)
-        ctx.lineTo(this.x + this.angle * this.length, this.y + this.length)
-        ctx.stroke()
-      }
+      light.x += (target.x - light.x) * 0.08
+      light.y += (target.y - light.y) * 0.08
+      frame.style.setProperty('--x', `${light.x * 100}%`)
+      frame.style.setProperty('--y', `${light.y * 100}%`)
+      raf = requestAnimationFrame(tick)
     }
 
-    const beams: Beam[] = []
-    for (let i = 0; i < 30; i++) {
-      beams.push(new Beam())
+    if (reduced) {
+      frame.style.setProperty('--x', '50%')
+      frame.style.setProperty('--y', '35%')
+      frame.style.setProperty('--r', '75%')
+    } else {
+      hero.addEventListener('pointermove', onMove)
+      raf = requestAnimationFrame(tick)
     }
-
-    const animate = () => {
-      ctx.fillStyle = 'rgba(0, 0, 0, 0.05)'
-      ctx.fillRect(0, 0, canvas.width, canvas.height)
-      
-      beams.forEach(beam => {
-        beam.update()
-        beam.draw()
-      })
-      
-      requestAnimationFrame(animate)
-    }
-    
-    animate()
-
     return () => {
-      window.removeEventListener('resize', setCanvasSize)
+      hero.removeEventListener('pointermove', onMove)
+      cancelAnimationFrame(raf)
     }
   }, [])
 
   return (
-    <section id="hero" className="relative min-h-screen flex items-center justify-center overflow-hidden bg-black">
-      {/* Animated Beams Background */}
-      <canvas
-        ref={canvasRef}
-        className="absolute inset-0 z-0"
-      />
-      
-      {/* Gradient Overlay */}
-      <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/30 to-black z-10" />
-
-      {/* Content */}
-      <div className="section-container relative z-20 text-center">
+    <section id="hero" ref={heroRef} className="hero-glow relative min-h-[100svh] flex items-center overflow-hidden bg-black pt-24 pb-16">
+      <div className="section-container relative z-10 grid md:grid-cols-12 gap-10 md:gap-8 items-center w-full">
+        {/* Portrait in the spotlight */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-          className="space-y-8"
+          initial={{ opacity: 0, scale: 0.96 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+          className="md:col-span-5 md:order-2 flex justify-center md:justify-end"
         >
-          {/* Eyebrow */}
+          <div ref={frameRef} className="spotlight relative w-[min(78vw,420px)] aspect-[4/5] overflow-hidden rounded-sm border border-white/10">
+            <Image src="/photo.jpeg" alt="Waseem Ghaly" fill priority sizes="(min-width: 768px) 420px, 78vw" className="spotlight-base object-cover" />
+            <Image src="/photo.jpeg" alt="" aria-hidden fill sizes="(min-width: 768px) 420px, 78vw" className="spotlight-lit object-cover" />
+            <div className="spotlight-glow absolute inset-0" aria-hidden />
+          </div>
+        </motion.div>
+
+        {/* Name and one line */}
+        <div className="md:col-span-7 md:order-1 text-center md:text-left">
           <motion.p
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3, duration: 0.8 }}
+            className="text-gold text-xs md:text-sm tracking-[0.35em] uppercase font-medium mb-6"
+          >
+            Entrepreneur · Consultant
+          </motion.p>
+          <h1 className="font-serif font-bold text-white leading-[0.95] tracking-tight text-[clamp(56px,9vw,140px)]">
+            {['Waseem', 'Ghaly'].map((word, i) => (
+              <span key={word} className="block overflow-hidden">
+                <motion.span
+                  initial={{ y: '105%' }}
+                  animate={{ y: 0 }}
+                  transition={{ delay: 0.4 + i * 0.12, duration: 1, ease: [0.16, 1, 0.3, 1] }}
+                  className={`block ${i === 1 ? 'gradient-text' : ''}`}
+                >
+                  {word}
+                </motion.span>
+              </span>
+            ))}
+          </h1>
+          <motion.p
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.9, duration: 0.8 }}
+            className="mt-8 text-xl md:text-2xl text-white/80 font-light"
+          >
+            I build companies, and help others run better.
+          </motion.p>
+          <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 0.4 }}
-            className="text-gold text-sm md:text-base tracking-[0.3em] uppercase font-medium"
+            transition={{ delay: 1.2, duration: 0.8 }}
+            className="mt-10 flex flex-wrap gap-3 justify-center md:justify-start"
           >
-            Entrepreneur • Consultant
-          </motion.p>
-
-          {/* Main Headline */}
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.6 }}
-            className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-serif font-bold text-white leading-tight px-4"
-          >
-            Waseem <span className="gradient-text">Ghaly</span>
-          </motion.h1>
-
-          {/* Subheadline */}
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.8 }}
-            className="text-lg sm:text-xl md:text-2xl lg:text-3xl text-white/90 max-w-4xl mx-auto font-light leading-relaxed px-4"
-          >
-            Building companies, and helping others run better
-          </motion.p>
-
-          {/* Role Pills */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 1 }}
-            className="flex flex-wrap justify-center gap-4 pt-4"
-          >
-            {[
-              { role: 'Founder', company: 'Nin9' },
-              { role: 'Co-Founder', company: 'Progressio Solutions' },
-              { role: 'Co-Founder', company: 'Byit' },
-            ].map((venture) => (
-              <div key={venture.company} className="px-6 py-3 bg-white/10 backdrop-blur-md border border-white/20 rounded-full">
-                <p className="text-white text-sm md:text-base">
-                  {venture.role} @ <span className="text-gold font-semibold">{venture.company}</span>
-                </p>
-              </div>
+            {ventures.map((name) => (
+              <button
+                key={name}
+                onClick={() => scrollToSection('ventures')}
+                className="px-5 py-2.5 rounded-full border border-white/15 bg-white/5 text-sm text-white/80 hover:border-gold/60 hover:text-gold transition-colors"
+              >
+                {name}
+              </button>
             ))}
           </motion.div>
-
-          {/* CTA Buttons */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 1.2 }}
-            className="flex flex-col sm:flex-row gap-4 justify-center pt-8"
-          >
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={() => scrollToSection('about')}
-              className="px-10 py-4 bg-gold text-black font-semibold text-lg rounded-sm hover:bg-gold-champagne transition-all duration-300 shadow-lg hover:shadow-gold/50"
-            >
-              Discover My Journey
-            </motion.button>
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={() => scrollToSection('contact')}
-              className="px-10 py-4 border-2 border-white text-white font-semibold text-lg rounded-sm hover:bg-white hover:text-black transition-all duration-300"
-            >
-              Let's Connect
-            </motion.button>
-          </motion.div>
-
-          {/* Scroll Indicator */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1.5 }}
-            className="absolute bottom-12 left-1/2 transform -translate-x-1/2"
-          >
-            <motion.div
-              animate={{ y: [0, 10, 0] }}
-              transition={{ repeat: Infinity, duration: 1.5 }}
-              className="w-6 h-10 border-2 border-white/30 rounded-full flex items-start justify-center p-2"
-            >
-              <motion.div
-                animate={{ opacity: [0, 1, 0] }}
-                transition={{ repeat: Infinity, duration: 1.5 }}
-                className="w-1.5 h-1.5 bg-gold rounded-full"
-              />
-            </motion.div>
-          </motion.div>
-        </motion.div>
+        </div>
       </div>
+
+      {/* Scroll cue */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1.8 }}
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 hidden md:block"
+        aria-hidden
+      >
+        <div className="w-px h-14 bg-gradient-to-b from-gold to-transparent animate-pulse" />
+      </motion.div>
     </section>
   )
 }
