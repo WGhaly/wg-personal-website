@@ -16,7 +16,7 @@ export default function Contact() {
         </motion.p>
         <h2 className="font-serif font-bold text-white leading-none text-[clamp(56px,10vw,150px)]">
           {/* The observer watches the clipping wrapper: the word itself starts outside it and would never intersect. */}
-          <motion.span initial="hidden" whileInView="shown" viewport={{ once: true }} className="block overflow-hidden">
+          <motion.span initial="hidden" whileInView="shown" viewport={{ once: true }} className="block overflow-hidden pb-[0.14em]">
             <motion.span
               variants={{ hidden: { y: '105%' }, shown: { y: 0 } }}
               transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
