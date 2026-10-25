@@ -1,62 +1,22 @@
 import type { Config } from 'tailwindcss'
 
 const config: Config = {
-  content: [
-    './pages/**/*.{js,ts,jsx,tsx,mdx}',
-    './components/**/*.{js,ts,jsx,tsx,mdx}',
-    './app/**/*.{js,ts,jsx,tsx,mdx}',
-  ],
+  content: ['./components/**/*.{js,ts,jsx,tsx,mdx}', './app/**/*.{js,ts,jsx,tsx,mdx}', './lib/**/*.{js,ts}'],
   theme: {
     extend: {
+      // Dark ground, cards set apart by colour. Gold belongs to the liquid only (globals.css: --liquid).
       colors: {
-        // Luxury Magazine Palette
-        black: '#000000',
-        'charcoal-dark': '#0A0A0A',
-        'charcoal': '#1A1A1A',
-        white: '#FFFFFF',
-        'off-white': '#F8F8F8',
-        'gold': '#D4AF37',
-        'gold-champagne': '#C9A961',
-        'gold-rose': '#E5C29F',
-        'gold-bronze': '#B8860B',
-        'gray-dark': '#2D2D2D',
-        'gray-mid': '#6B6B6B',
-        'gray-light': '#E5E5E5',
+        ground: '#0B0B0C',
+        card: '#151517',
+        raised: '#1E1E21',
+        line: '#2A2A2E',
+        ink: '#F4F2EC',
+        'ink-muted': '#9C998F',
+        gold: '#D4AF37',
       },
       fontFamily: {
-        serif: ['Playfair Display', 'Georgia', 'serif'],
-        sans: ['Inter', 'system-ui', 'sans-serif'],
-        display: ['Bebas Neue', 'Impact', 'sans-serif'],
-      },
-      fontSize: {
-        'hero': ['4.5rem', { lineHeight: '1.1', letterSpacing: '-0.02em' }],
-        'hero-mobile': ['3rem', { lineHeight: '1.1', letterSpacing: '-0.02em' }],
-        'section-title': ['3.5rem', { lineHeight: '1.1', letterSpacing: '-0.01em' }],
-        'section-title-mobile': ['2.25rem', { lineHeight: '1.1', letterSpacing: '-0.01em' }],
-      },
-      animation: {
-        'fade-in': 'fadeIn 0.6s ease-in-out',
-        'slide-up': 'slideUp 0.6s ease-out',
-        'float': 'float 3s ease-in-out infinite',
-        'shimmer': 'shimmer 2s linear infinite',
-      },
-      keyframes: {
-        fadeIn: {
-          '0%': { opacity: '0' },
-          '100%': { opacity: '1' },
-        },
-        slideUp: {
-          '0%': { transform: 'translateY(20px)', opacity: '0' },
-          '100%': { transform: 'translateY(0)', opacity: '1' },
-        },
-        float: {
-          '0%, 100%': { transform: 'translateY(0)' },
-          '50%': { transform: 'translateY(-10px)' },
-        },
-        shimmer: {
-          '0%': { backgroundPosition: '-1000px 0' },
-          '100%': { backgroundPosition: '1000px 0' },
-        },
+        serif: ['var(--font-playfair)', 'Georgia', 'serif'],
+        sans: ['var(--font-inter)', 'system-ui', 'sans-serif'],
       },
     },
   },
