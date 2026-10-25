@@ -21,8 +21,8 @@ export default function Hero() {
     if (!hero || !frame) return
 
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    let target = { x: 0.5, y: 0.35 }
-    const light = { x: 0.5, y: 0.35 }
+    let target = { x: 0.5, y: 0.3 }
+    const light = { x: 0.5, y: 0.3 }
     let lastMove = 0
     let raf = 0
 
@@ -39,7 +39,7 @@ export default function Hero() {
     const tick = (t: number) => {
       if (t - lastMove > 2500) {
         // Idle drift: a slow figure-eight over the face.
-        target = { x: 0.5 + Math.sin(t / 2600) * 0.28, y: 0.38 + Math.sin(t / 1300) * 0.14 }
+        target = { x: 0.5 + Math.sin(t / 2600) * 0.28, y: 0.3 + Math.sin(t / 1300) * 0.12 }
       }
       light.x += (target.x - light.x) * 0.08
       light.y += (target.y - light.y) * 0.08
@@ -50,7 +50,7 @@ export default function Hero() {
 
     if (reduced) {
       frame.style.setProperty('--x', '50%')
-      frame.style.setProperty('--y', '35%')
+      frame.style.setProperty('--y', '30%')
       frame.style.setProperty('--r', '75%')
     } else {
       hero.addEventListener('pointermove', onMove)
@@ -73,8 +73,8 @@ export default function Hero() {
           className="md:col-span-5 md:order-2 flex justify-center md:justify-end"
         >
           <div ref={frameRef} className="spotlight relative w-[min(78vw,420px)] aspect-[4/5] overflow-hidden rounded-sm border border-white/10">
-            <Image src="/photo.jpeg" alt="Waseem Ghaly" fill priority sizes="(min-width: 768px) 420px, 78vw" className="spotlight-base object-cover" />
-            <Image src="/photo.jpeg" alt="" aria-hidden fill sizes="(min-width: 768px) 420px, 78vw" className="spotlight-lit object-cover" />
+            <Image src="/portrait.jpg" alt="Waseem Ghaly" fill priority sizes="(min-width: 768px) 420px, 78vw" className="spotlight-base object-cover" />
+            <Image src="/portrait.jpg" alt="" aria-hidden fill sizes="(min-width: 768px) 420px, 78vw" className="spotlight-lit object-cover" />
             <div className="spotlight-glow absolute inset-0" aria-hidden />
           </div>
         </motion.div>

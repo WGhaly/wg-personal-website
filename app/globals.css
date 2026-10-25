@@ -115,11 +115,11 @@ body::after {
 }
 .spotlight .spotlight-lit {
   filter: grayscale(1) sepia(0.45) saturate(1.2) brightness(1.02) contrast(1.05);
-  -webkit-mask-image: radial-gradient(ellipse var(--r, 48%) calc(var(--r, 48%) * 0.8) at var(--x, 50%) var(--y, 35%), #000 0%, rgba(0, 0, 0, 0.6) 45%, transparent 100%);
-  mask-image: radial-gradient(ellipse var(--r, 48%) calc(var(--r, 48%) * 0.8) at var(--x, 50%) var(--y, 35%), #000 0%, rgba(0, 0, 0, 0.6) 45%, transparent 100%);
+  -webkit-mask-image: radial-gradient(ellipse var(--r, 48%) calc(var(--r, 48%) * 0.8) at var(--x, 50%) var(--y, 30%), #000 0%, rgba(0, 0, 0, 0.6) 45%, transparent 100%);
+  mask-image: radial-gradient(ellipse var(--r, 48%) calc(var(--r, 48%) * 0.8) at var(--x, 50%) var(--y, 30%), #000 0%, rgba(0, 0, 0, 0.6) 45%, transparent 100%);
 }
 .spotlight .spotlight-glow {
-  background: radial-gradient(ellipse 34% 27% at var(--x, 50%) var(--y, 35%), rgba(212, 175, 55, 0.22), transparent 70%);
+  background: radial-gradient(ellipse 34% 27% at var(--x, 50%) var(--y, 30%), rgba(212, 175, 55, 0.22), transparent 70%);
   mix-blend-mode: screen;
 }
 

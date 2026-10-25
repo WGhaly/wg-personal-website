@@ -25,6 +25,7 @@ export const metadata: Metadata = {
     title: 'Waseem Ghaly - Founder & Consultant',
     description: 'Building companies and helping others run better.',
     type: 'website',
+    images: ['/portrait.jpg'],
     locale: 'en_US',
   },
   twitter: {
