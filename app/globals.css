@@ -2,418 +2,90 @@
 @tailwind components;
 @tailwind utilities;
 
-/*
- * waseemghaly.com on Nine's liquid scroll engine ("the jelly", lib/jelly/stream.ts). The engine's rules hold, with
- * gold in place of Nine orange: exactly one gold thing on screen (the liquid, or the object it is forming), text on
- * gold is always near-black, everything else is ink and grey on a dark ground.
- */
-:root {
-  --liquid: #d4af37;
-  --on-liquid: #0a0a0a;
-  --ground: #0b0b0c;
-  --card: #151517;
-  --raised: #1e1e21;
-  --line: #2a2a2e;
-  --ink: #f4f2ec;
-  --ink-muted: #9c998f;
-  --header-h: 64px;
-  --dur-fast: 120ms;
-  --dur-base: 240ms;
-  --ease: cubic-bezier(0.7, 0, 0.2, 1);
-  color-scheme: dark;
-}
-
 @layer base {
-  html {
-    background: var(--ground);
-    color: var(--ink);
-    -webkit-font-smoothing: antialiased;
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 0 0% 0%;
   }
+  
+  * {
+    @apply border-gray-light;
+  }
+  
   body {
-    min-height: 100dvh;
-    background: var(--ground);
+    @apply bg-white text-black font-sans;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
-  :focus-visible {
-    outline: 2px solid var(--ink);
-    outline-offset: 2px;
-  }
-  ::selection {
-    background: var(--ink);
-    color: var(--ground);
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-serif;
   }
 }
 
 @layer components {
-  .shell {
-    --shell-pad: 16px;
-    width: 100%;
-    max-width: calc(1200px + 2 * var(--shell-pad));
-    margin-inline: auto;
-    padding-inline: var(--shell-pad);
+  .section-container {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
   }
-  @media (min-width: 768px) {
-    .shell {
-      --shell-pad: 32px;
-    }
+
+  .glass-effect {
+    @apply bg-white/10 backdrop-blur-md border border-white/20;
   }
-  .hero-title {
-    font-family: var(--font-playfair), Georgia, serif;
-    font-size: clamp(48px, 8vw, 112px);
-    font-weight: 700;
-    line-height: 1;
-    letter-spacing: -0.02em;
+
+  .gold-glow {
+    box-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+  }
+
+  .text-balance {
     text-wrap: balance;
   }
-  .chapter-title {
-    font-family: var(--font-playfair), Georgia, serif;
-    font-size: clamp(30px, 3.6vw, 54px);
-    font-weight: 700;
-    line-height: 1.06;
-    letter-spacing: -0.02em;
-    text-wrap: balance;
+
+  /* Smooth scroll */
+  html {
+    scroll-behavior: smooth;
   }
-  .body-copy {
-    font-size: clamp(16px, 1.2vw, 18px);
-    line-height: 1.6;
-    color: var(--ink-muted);
-  }
-  .eyebrow {
-    font-size: 12px;
-    font-weight: 500;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--ink-muted);
-  }
-  .btn-secondary,
-  .btn-ghost {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    min-height: 44px;
-    padding-inline: 20px;
-    border-radius: 8px;
-    font-size: 14px;
-    font-weight: 600;
-    white-space: nowrap;
-    transition: background-color var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease);
-  }
-  .btn-secondary {
-    border: 1px solid var(--line);
-    color: var(--ink);
-  }
-  .btn-secondary:hover {
-    background: var(--raised);
-    border-color: var(--ink-muted);
-  }
-  .btn-ghost {
-    padding-inline: 12px;
-    color: var(--ink);
-  }
-  .btn-ghost:hover {
-    background: var(--raised);
-  }
-  .logo-tile img {
-    filter: grayscale(1);
-    opacity: 0.8;
-    transition: filter var(--dur-base) var(--ease), opacity var(--dur-base) var(--ease);
-  }
-  .logo-tile:hover img {
-    filter: none;
-    opacity: 1;
-  }
-}
 
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-  }
-}
-
-/* ------------------------------------------------------------------ the jelly (Nine engine README, flattened) */
-
-.jelly-layer {
-  position: fixed;
-  inset: 0;
-  width: 100vw;
-  height: 100vh;
-  overflow: visible;
-  pointer-events: none;
-  z-index: 40; /* above content, below the header (z-50) */
-}
-html:not([data-jelly-mode='live']) .jelly-layer {
-  display: none;
-}
-
-/* A station shows its gold state when the live engine has handed off to it (.is-jelly), and always without it. */
-:is([data-jelly-type='text'], [data-jelly-type='glyph']) {
-  color: var(--jelly-base, var(--ink));
-}
-[data-jelly-type='text'].is-jelly-fading {
-  color: color-mix(in srgb, var(--liquid) calc(var(--jelly-mix, 0) * 100%), var(--jelly-base, var(--ink)));
-}
-html:not([data-jelly-mode='live']) [data-jelly],
-[data-jelly].is-jelly,
-[data-jelly-static] {
-  --frame: var(--liquid);
-}
-html:not([data-jelly-mode='live']) :is([data-jelly-type='text'], [data-jelly-type='glyph'])[data-jelly],
-:is([data-jelly-type='text'], [data-jelly-type='glyph'])[data-jelly].is-jelly {
-  color: var(--liquid);
-}
-[data-jelly-type='fill'] {
-  background-color: var(--fill-base, var(--raised));
-}
-html:not([data-jelly-mode='live']) [data-jelly-type='fill'],
-html:not([data-jelly-mode='live']) [data-jelly-type='fill'] *,
-[data-jelly-type='fill'].is-jelly,
-[data-jelly-type='fill'].is-jelly * {
-  background-color: var(--liquid);
-  color: var(--on-liquid);
-}
-html:not([data-jelly-mode='live']) [data-jelly-type='fill'] *,
-[data-jelly-type='fill'].is-jelly * {
-  background-color: transparent;
-}
-
-.jelly-round {
-  border-radius: var(--round, 8px);
-}
-
-/* Outline frame: a --stroke border on a pseudo-element, matching the engine's frameRing() (data-jelly-stroke). */
-.jelly-frame {
-  --stroke: 2px;
-  position: relative;
-  border-radius: var(--round, 0px);
-}
-.jelly-frame::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  border: var(--stroke) solid var(--frame, var(--line));
-  border-radius: var(--round, 0px);
-}
-
-/* Hold animations reveal items one by one while live; without the engine everything is simply shown. */
-html[data-jelly-mode='live'] [data-jelly-section] .reveal {
-  transition: opacity var(--dur-base) var(--ease), translate var(--dur-base) var(--ease);
-}
-html[data-jelly-mode='live'] [data-jelly-section] .reveal:not([data-shown]) {
-  opacity: 0;
-  translate: 0 -8px;
-}
-.reveal:focus-within {
-  opacity: 1 !important;
-  translate: none !important;
-}
-
-/* Outline parts light in order during the hold: muted until lit, while live. */
-.lit-part {
-  transition: color var(--dur-base) var(--ease);
-}
-html[data-jelly-mode='live'] [data-jelly] > .lit-part:not([data-lit]) {
-  color: var(--ink-muted);
-}
-
-/* No transitions while the engine reads boxes (they must be final, not mid-animation). */
-html.jelly-measuring *,
-html.jelly-measuring *::before {
-  transition: none !important;
-}
-
-/* Before the liquid arrives a station's object is not there yet (opacity keeps it in the accessibility tree). */
-html[data-jelly-mode='live'] [data-jelly-state='empty'][data-jelly-type='fill'] {
-  opacity: 0;
-}
-html[data-jelly-mode='live'] [data-jelly-state='empty'][data-jelly-type='outline'] {
-  --frame: transparent;
-}
-
-/* Reading stops: a station's section sticks while the liquid forms and holds (Stop.tsx). */
-:root {
-  --stop: 55svh;
-}
-@media (max-width: 767px) {
-  :root {
-    --stop: 50svh;
-  }
-}
-[data-jelly-spacer] {
-  display: none;
-}
-html[data-jelly-mode='live'] [data-jelly-wrap] > [data-jelly-section] {
-  position: sticky;
-  top: 0;
-  z-index: 1;
-}
-html[data-jelly-mode='live'] [data-jelly-spacer] {
-  display: block;
-  height: calc(var(--holds, 1) * var(--stop));
-}
-
-/* ------------------------------------------------------------------ story rail */
-
-.story-rail {
-  position: fixed;
-  inset-inline-start: 28px;
-  top: 50%;
-  translate: 0 -50%;
-  z-index: 45;
-}
-.story-rail ol {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-.story-rail-line {
-  position: absolute;
-  inset-inline-start: 5px;
-  top: 17px;
-  bottom: 17px;
-  width: 1px;
-  background: var(--line);
-}
-.story-rail-line > span {
-  display: block;
-  width: 1px;
-  height: calc(var(--rail-progress, 0) * 100%);
-  background: var(--ink);
-}
-.story-rail-point {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  min-height: 28px;
-  padding-inline-end: 8px;
-  cursor: pointer;
-  text-align: start;
-}
-.story-rail-dot {
-  flex: none;
-  width: 11px;
-  height: 11px;
-  border-radius: 50%;
-  border: 1px solid var(--ink-muted);
-  background: var(--ground);
-  transition: background-color var(--dur-base) var(--ease), border-color var(--dur-base) var(--ease), scale var(--dur-base) var(--ease);
-}
-.story-rail-label {
-  font-size: 13px;
-  font-weight: 500;
-  white-space: nowrap;
-  color: var(--ink-muted);
-  transition: color var(--dur-base) var(--ease);
-}
-.story-rail-point[data-passed] .story-rail-dot {
-  border-color: var(--ink);
-}
-.story-rail-point[aria-current='step'] .story-rail-dot {
-  background: var(--ink);
-  border-color: var(--ink);
-  scale: 1.3;
-}
-.story-rail-point[aria-current='step'] .story-rail-label,
-.story-rail-point:hover .story-rail-label,
-.story-rail-point:focus-visible .story-rail-label {
-  color: var(--ink);
-}
-
-/* Room for the rail: the story starts after it where the page margin is narrower than the rail. */
-@media (min-width: 1024px) {
-  body:has(.story-rail) main [data-jelly-wrap] .shell {
-    padding-inline-start: max(var(--shell-pad), calc(220px - max(0px, (100vw - 1472px) / 2)));
-  }
-}
-
-/* Below 1024px the rail becomes a chapter bar under the header. */
-.story-bar {
-  display: none;
-}
-@media (max-width: 1023px) {
-  .story-rail {
+  /* Hide scrollbar but keep functionality */
+  .hide-scrollbar::-webkit-scrollbar {
     display: none;
   }
-  .story-bar {
-    display: block;
-    position: fixed;
-    inset-inline: 0;
-    top: var(--header-h);
-    z-index: 45;
-    background: rgba(11, 11, 12, 0.92);
-    backdrop-filter: blur(12px);
-    border-bottom: 1px solid var(--line);
-    font-size: 13px;
-    font-weight: 500;
+  
+  .hide-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
   }
-  .story-bar summary {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    min-height: 40px;
-    padding-inline: 16px;
-    cursor: pointer;
-    list-style: none;
-    color: var(--ink);
+
+  /* Custom button styles */
+  .btn-primary {
+    @apply px-8 py-4 bg-gold text-black font-semibold rounded-sm 
+           hover:bg-gold-champagne transition-all duration-300
+           hover:scale-105 hover:shadow-lg;
   }
-  .story-bar summary::-webkit-details-marker {
-    display: none;
+
+  .btn-ghost {
+    @apply px-8 py-4 border-2 border-white text-white font-semibold rounded-sm
+           hover:bg-white hover:text-black transition-all duration-300;
   }
-  .story-bar ol {
-    padding: 4px 16px 12px;
-  }
-  .story-bar li button {
-    display: flex;
-    width: 100%;
-    align-items: center;
-    gap: 12px;
-    min-height: 40px;
-    color: var(--ink-muted);
-    text-align: start;
-  }
-  .story-bar li button[aria-current='step'] {
-    color: var(--ink);
-  }
-  .story-bar li button[aria-current='step'] .story-rail-dot {
-    background: var(--ink);
-    border-color: var(--ink);
-  }
-  .story-bar-step {
-    color: var(--ink-muted);
-  }
-  .story-bar-chevron {
-    margin-inline-start: auto;
-    width: 8px;
-    height: 8px;
-    border-inline-end: 1px solid currentColor;
-    border-bottom: 1px solid currentColor;
-    rotate: 45deg;
-    translate: 0 -2px;
-    transition: rotate var(--dur-base) var(--ease);
-  }
-  .story-bar[open] .story-bar-chevron {
-    rotate: 225deg;
-    translate: 0 2px;
-  }
-  .story-bar-progress {
-    position: absolute;
-    inset-inline: 0;
-    bottom: -1px;
-    height: 1px;
-  }
-  .story-bar-progress > span {
-    display: block;
-    height: 1px;
-    width: calc(var(--rail-progress, 0) * 100%);
-    background: var(--ink);
-  }
-  /* The story's sections clear the bar. */
-  body:has(.story-bar) main [data-jelly-section] {
-    padding-top: calc(var(--header-h) + 52px);
+
+  /* Animated gradient text */
+  .gradient-text {
+    @apply bg-gradient-to-r from-gold via-gold-champagne to-gold bg-clip-text text-transparent;
   }
 }
+
+@layer utilities {
+  .animation-delay-200 {
+    animation-delay: 200ms;
+  }
+  
+  .animation-delay-400 {
+    animation-delay: 400ms;
+  }
+  
+  .animation-delay-600 {
+    animation-delay: 600ms;
+  }
+}
+
+/* Google Fonts Import */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600;700&display=swap');

@@ -1,27 +1,27 @@
-import { JellyLayer } from '@/components/jelly/JellyLayer'
-import Header from '@/components/story/Header'
-import Footer from '@/components/story/Footer'
-import { StoryRail } from '@/components/story/StoryRail'
-import { Clients, Consulting, Contact, Journey, Nin9, Opening, Plan, Principles } from '@/components/story/Chapters'
-import { CHAPTERS } from '@/lib/content'
+import Navigation from '@/components/Navigation'
+import Hero from '@/components/Hero'
+import About from '@/components/About'
+import Ventures from '@/components/Ventures'
+import BiggerPicture from '@/components/BiggerPicture'
+import Journey from '@/components/Journey'
+import Expertise from '@/components/Expertise'
+import Clients from '@/components/Clients'
+import Contact from '@/components/Contact'
+import Footer from '@/components/Footer'
 
 export default function Home() {
   return (
-    <>
-      <Header />
-      <StoryRail chapters={CHAPTERS} label="Chapters" />
-      <main>
-        <Opening />
-        <Nin9 />
-        <Plan />
-        <Consulting />
-        <Journey />
-        <Clients />
-        <Principles />
-        <Contact />
-      </main>
+    <main className="min-h-screen">
+      <Navigation />
+      <Hero />
+      <About />
+      <Clients />
+      <Ventures />
+      <Journey />
+      <Expertise />
+      <BiggerPicture />
+      <Contact />
       <Footer />
-      <JellyLayer />
-    </>
+    </main>
   )
 }
