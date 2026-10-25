@@ -87,5 +87,104 @@
   }
 }
 
-/* Google Fonts Import */
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
+/* ------------------------------------------------------------------ premium layer */
+
+/* Film grain over everything: a tiny SVG noise tile, barely there. */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  pointer-events: none;
+  opacity: 0.06;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* A warm glow behind dark sections. */
+.hero-glow::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(600px circle at var(--hx, 70%) var(--hy, 40%), rgba(212, 175, 55, 0.10), transparent 60%);
+}
+
+/* Cards lit by the cursor (--mx/--my set per card). */
+.glow-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.4s;
+  background: radial-gradient(420px circle at var(--mx, 50%) var(--my, 50%), rgba(212, 175, 55, 0.14), transparent 60%);
+}
+.glow-card:hover::before {
+  opacity: 1;
+}
+
+/* Email link: a gold line that draws in on hover. */
+.gold-underline {
+  background: linear-gradient(#d4af37, #d4af37) left bottom / 0% 1px no-repeat;
+  padding-bottom: 6px;
+  transition: background-size 0.5s cubic-bezier(0.16, 1, 0.3, 1), color 0.3s;
+}
+.gold-underline:hover {
+  background-size: 100% 1px;
+}
+
+/* Logo marquee: pure CSS, pauses on hover, faded at the edges. */
+.marquee {
+  display: flex;
+  overflow: hidden;
+}
+.marquee-track {
+  display: flex;
+  flex: none;
+  animation: marquee 45s linear infinite;
+}
+.marquee-reverse {
+  animation-direction: reverse;
+}
+.marquee:hover .marquee-track {
+  animation-play-state: paused;
+}
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+.marquee-mask {
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track {
+    animation: none;
+    flex-wrap: wrap;
+  }
+}
+
+/* Section snap: firm on desktop, gentle on phones (sections there can be taller than the screen). */
+html {
+  scroll-snap-type: y proximity;
+}
+@media (min-width: 768px) and (min-height: 640px) {
+  html {
+    scroll-snap-type: y mandatory;
+  }
+}
+.snap-section {
+  scroll-snap-align: start;
+  scroll-snap-stop: always; /* one gesture moves one stop, never past the next company */
+}
+.snap-footer {
+  scroll-snap-align: end;
+}
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-snap-type: none;
+  }
+}

@@ -17,20 +17,21 @@ const inter = Inter({
 })
 
 export const metadata: Metadata = {
-  title: 'Waseem Ghaly - Nation Builder & Innovation Architect',
-  description: 'Building Egypt\'s Innovation Economy from the Ground Up. Operations Director at NCTC | Co-Founder at Progressio Solutions',
-  keywords: ['Innovation', 'Technology', 'Egypt', 'NCTC', 'Progressio', 'Entrepreneurship', 'R&D'],
+  title: 'Waseem Ghaly - Founder & Consultant',
+  description: 'Entrepreneur and consultant. Founder of Nin9, co-founder of Progressio Solutions and Byit. Operations, enterprise systems and new ventures.',
+  keywords: ['Waseem Ghaly', 'Entrepreneur', 'Consultant', 'Operations', 'Nin9', 'Progressio', 'Byit', 'SAP', 'Salesforce', 'Celonis', 'Egypt'],
   authors: [{ name: 'Waseem Ghaly' }],
   openGraph: {
-    title: 'Waseem Ghaly - Nation Builder & Innovation Architect',
-    description: 'Building Egypt\'s Innovation Economy from the Ground Up',
+    title: 'Waseem Ghaly - Founder & Consultant',
+    description: 'Building companies and helping others run better.',
     type: 'website',
+    images: ['/portrait.jpg'],
     locale: 'en_US',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Waseem Ghaly - Nation Builder & Innovation Architect',
-    description: 'Building Egypt\'s Innovation Economy from the Ground Up',
+    title: 'Waseem Ghaly - Founder & Consultant',
+    description: 'Building companies and helping others run better.',
   },
 }
 
